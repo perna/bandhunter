@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+#miscelanous
+.idea/
+*.sublime-project
+*.sublime-workspace
+db.sqlite3
