@@ -14,6 +14,8 @@ class Artist(models.Model):
     twitter = models.CharField("Twitter", max_length=120, blank=False, null=True)
     snapchat = models.CharField("Snapchat", max_length=120, blank=False, null=True)
     slug = models.SlugField(max_length=170, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'artist'
