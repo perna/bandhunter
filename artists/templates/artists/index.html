@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% for artist in artists %}
+        {{ artist.name }}
+    {% endfor %}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ artists.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ artists.number }} of {{ artists.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ artists.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
