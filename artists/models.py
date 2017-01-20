@@ -1,11 +1,12 @@
 from django.db import models
-from django.utils.text import slugify
-import itertools
+from django.db.models import signals
+from django.core.urlresolvers import reverse
+from .signals import create_slug
 
 class Artist(models.Model):
     name = models.CharField("Nome", max_length=120)
     press_release = models.TextField("Press Release", db_index=True)
-    photo = models.ImageField("Foto")
+    photo = models.ImageField("Foto", upload_to='artists/')
     phone = models.CharField("Telefone", max_length=20)
     site = models.CharField("Site", max_length=200)
     contact_email = models.EmailField("Email")
@@ -16,6 +17,9 @@ class Artist(models.Model):
     slug = models.SlugField(max_length=170, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    slug_field_name = 'slug'
+    slug_from = 'name'
+
 
     class Meta:
         db_table = 'artist'
@@ -25,15 +29,8 @@ class Artist(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("artist-profile", kwargs={'pk': self.pk})
 
-    def save(self):
-        instance = super(Artist, self).save(commit=False)
-        instance.slug = orig = slugify(instance.title)
 
-        for x in itertools.count(1):
-            if not Post.objects.filter(slug=instance.slug).exists():
-                break
-            instance.slug = '%s-%d' % (orig, x)
-
-        instance.save()
-        return instance
+signals.post_save.connect(create_slug, sender=Artist)
