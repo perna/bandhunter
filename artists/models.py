@@ -3,12 +3,22 @@ from django.db.models import signals
 from django.core.urlresolvers import reverse
 from .signals import create_slug
 from django.contrib.auth.models import User
+import hashlib
+import random
+
+
+def photo_path_and_name(instance, filename):
+    random_filename = hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+    path = 'artists/'
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (random_filename, ext)
+    return '/'.join([path, filename, ])
 
 
 class Artist(models.Model):
     name = models.CharField("Nome", max_length=120)
     press_release = models.TextField("Press Release", db_index=True)
-    photo = models.ImageField("Foto", upload_to='artists/')
+    photo = models.ImageField("Foto", upload_to=photo_path_and_name)
     phone = models.CharField("Telefone", max_length=20)
     site = models.CharField("Site", max_length=200)
     contact_email = models.EmailField("Email")
