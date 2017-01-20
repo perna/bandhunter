@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Artist
+from .forms import ArtistForm
 
-def index(request):
+
+def list_artists(request):
     artist_list = Artist.objects.all()
     paginator = Paginator(artist_list, 10)
     page = request.GET.get('page', 1)
@@ -16,3 +18,40 @@ def index(request):
 
     context = {'artists': artists}
     return render(request, 'artists/index.html', context)
+
+
+def create_artist(request):
+    form = ArtistForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('artists-list')
+
+    context = {'form': form}
+    return render(request, 'artists/form.html', context)
+
+
+def update_artist(request, id_artist):
+    artist = Artist.objects.get(pk=id_artist)
+
+    if request.method == 'POST':
+        form = ArtistForm(request.POST, instance=artist)
+
+        if form.is_valid():
+            form.save()
+            return redirect('artists-list')
+    else:
+        form = ArtistForm(instance=artist)
+        context = {'form': form}
+        return render(request, 'artists/form.html', context)
+
+
+def delete_artist(request, id_artist):
+    artist = Artist.objects.get(pk=id_artist)
+
+    if request.method == "POST":
+        artist.delete()
+        return redirect('artists-list')
+
+    else:
+        return render(request, 'artists/form.html')
