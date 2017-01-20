@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from .models import Artist
 from .forms import ArtistForm, SearchForm
 
@@ -23,38 +24,48 @@ def search_artists(request):
     return render(request, 'artists/index.html', context)
 
 
+@login_required
 def create_artist(request):
-    form = ArtistForm(request.POST or None)
+    form = ArtistForm(request.POST or None, request.FILES or None)
 
     if request.method == 'POST' and form.is_valid():
+        form.instance.user = request.user
         form.save()
-        return redirect('artists-list')
+        return redirect('dashboard_index')
 
     context = {'form': form}
     return render(request, 'artists/form.html', context)
 
 
+@login_required
 def update_artist(request, id_artist):
     artist = Artist.objects.get(pk=id_artist)
 
     if request.method == 'POST':
-        form = ArtistForm(request.POST, instance=artist)
+        form = ArtistForm(request.POST, request.FILES, instance=artist)
 
         if form.is_valid():
             form.save()
-            return redirect('artists-list')
+            return redirect('dashboard_index')
     else:
         form = ArtistForm(instance=artist)
         context = {'form': form}
-        return render(request, 'artists/form.html', context)
+        return render(request, 'artists/form-edit.html', context)
 
 
+@login_required
 def delete_artist(request, id_artist):
     artist = Artist.objects.get(pk=id_artist)
 
     if request.method == "POST":
         artist.delete()
-        return redirect('artists-list')
+        return redirect('dashboard_index')
 
     else:
         return render(request, 'artists/form.html')
+
+
+def profile(request, slug):
+    artist = get_object_or_404(Artist, slug=slug)
+    context = {'artist': artist}
+    return render(request, 'artists/profile.html', context)

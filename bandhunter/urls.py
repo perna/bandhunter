@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'', include('artists.urls')),
     url(r"^account/signup/$", SignupView.as_view(), name="account_signup"),
     url(r"^account/", include("account.urls")),
+    url(r"^dashboard/", include('dashboard.urls')),
 ]
