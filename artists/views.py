@@ -28,7 +28,7 @@ def create_artist(request):
     if request.method == 'POST' and form.is_valid():
         form.instance.user = request.user
         form.save()
-        return redirect('dashboard-index')
+        return redirect('dashboard_index')
 
     context = {'form': form}
     return render(request, 'artists/form.html', context)
@@ -43,11 +43,11 @@ def update_artist(request, id_artist):
 
         if form.is_valid():
             form.save()
-            return redirect('artists-list')
+            return redirect('dashboard_index')
     else:
         form = ArtistForm(instance=artist)
         context = {'form': form}
-        return render(request, 'artists/form.html', context)
+        return render(request, 'artists/form-edit.html', context)
 
 
 @login_required
@@ -56,7 +56,7 @@ def delete_artist(request, id_artist):
 
     if request.method == "POST":
         artist.delete()
-        return redirect('artists-list')
+        return redirect('dashboard_index')
 
     else:
         return render(request, 'artists/form.html')

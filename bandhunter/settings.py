@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'customaccount',
     'account',
     'artists',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -134,9 +135,11 @@ SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ACCOUNT_LOGIN_REDIRECT_URL = '/account/settings'
+ACCOUNT_LOGIN_REDIRECT_URL = '/dashboard'
 ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_USER_DISPLAY = lambda user: user.email
 
 AUTHENTICATION_BACKENDS = ['account.auth_backends.EmailAuthenticationBackend']
+
+LOGIN_URL = '/account/login/'
