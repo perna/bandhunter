@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block body %}
+
+    <div class="jumbotron">
+        <h1>BandHunter</h1>
+        <form action="">
+            {{ form|crispy }}
+        </form>
+    </div>
+
+
+
     {% for artist in artists %}
         {{ artist.name }}
     {% endfor %}

@@ -35,8 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'django.contrib.sites',
+    'crispy_forms',
+    'taggit',
     'customaccount',
     'account',
     'artists',
@@ -140,3 +141,6 @@ ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_USER_DISPLAY = lambda user: user.email
 
 AUTHENTICATION_BACKENDS = ['account.auth_backends.EmailAuthenticationBackend']
+
+#Django Taggit
+TAGGIT_CASE_INSENSITIVE = True

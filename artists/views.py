@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Artist
-from .forms import ArtistForm
+from .forms import ArtistForm, SearchForm
 
 
-def list_artists(request):
+def search_artists(request):
+
+    form = SearchForm()
+
     artist_list = Artist.objects.all()
     paginator = Paginator(artist_list, 10)
     page = request.GET.get('page', 1)
@@ -16,7 +19,7 @@ def list_artists(request):
     except EmptyPage:
         artists = paginator.page(paginator.num_pages)
 
-    context = {'artists': artists}
+    context = {'artists': artists, 'form': form}
     return render(request, 'artists/index.html', context)
 
 

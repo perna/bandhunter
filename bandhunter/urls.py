@@ -19,7 +19,7 @@ from customaccount.views import SignupView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'artistas/', include('artists.urls')),
+    url(r'', include('artists.urls')),
     url(r"^account/signup/$", SignupView.as_view(), name="account_signup"),
     url(r"^account/", include("account.urls")),
 ]
