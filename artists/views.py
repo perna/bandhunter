@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from .models import Artist
 from .forms import ArtistForm
 
@@ -20,6 +21,7 @@ def list_artists(request):
     return render(request, 'artists/index.html', context)
 
 
+@login_required
 def create_artist(request):
     form = ArtistForm(request.POST or None)
 
@@ -31,6 +33,7 @@ def create_artist(request):
     return render(request, 'artists/form.html', context)
 
 
+@login_required
 def update_artist(request, id_artist):
     artist = Artist.objects.get(pk=id_artist)
 
@@ -46,6 +49,7 @@ def update_artist(request, id_artist):
         return render(request, 'artists/form.html', context)
 
 
+@login_required
 def delete_artist(request, id_artist):
     artist = Artist.objects.get(pk=id_artist)
 
