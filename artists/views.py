@@ -23,11 +23,12 @@ def list_artists(request):
 
 @login_required
 def create_artist(request):
-    form = ArtistForm(request.POST or None)
+    form = ArtistForm(request.POST or None, request.FILES or None)
 
     if request.method == 'POST' and form.is_valid():
+        form.instance.user = request.user
         form.save()
-        return redirect('artists-list')
+        return redirect('dashboard-index')
 
     context = {'form': form}
     return render(request, 'artists/form.html', context)

@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import signals
 from django.core.urlresolvers import reverse
 from .signals import create_slug
+from django.contrib.auth.models import User
+
 
 class Artist(models.Model):
     name = models.CharField("Nome", max_length=120)
@@ -19,7 +21,7 @@ class Artist(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     slug_field_name = 'slug'
     slug_from = 'name'
-
+    user = models.OneToOneField(User)
 
     class Meta:
         db_table = 'artist'
