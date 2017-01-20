@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'django.contrib.sites',
+    'customaccount',
     'account',
     'artists',
 ]
@@ -76,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bandhunter.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -105,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -119,7 +118,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -127,10 +125,16 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_LOGIN_REDIRECT_URL = '/account/settings'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+ACCOUNT_USER_DISPLAY = lambda user: user.email
+
+AUTHENTICATION_BACKENDS = ['account.auth_backends.EmailAuthenticationBackend']
