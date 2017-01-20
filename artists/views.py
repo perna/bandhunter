@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from .models import Artist
@@ -60,3 +60,9 @@ def delete_artist(request, id_artist):
 
     else:
         return render(request, 'artists/form.html')
+
+
+def profile(request, slug):
+    artist = get_object_or_404(Artist, slug=slug)
+    context = {'artist': artist}
+    return render(request, 'artists/profile.html', context)
