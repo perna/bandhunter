@@ -39,7 +39,7 @@ def update_artist(request, id_artist):
     artist = Artist.objects.get(pk=id_artist)
 
     if request.method == 'POST':
-        form = ArtistForm(request.POST, instance=artist)
+        form = ArtistForm(request.POST, request.FILES, instance=artist)
 
         if form.is_valid():
             form.save()
